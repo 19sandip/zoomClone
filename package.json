@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon index.js",
     "dev": "node index.js",
-    "prod": "pm2 index.js"
+    "prod": "nodemon index.js"
   },
   "author": "sandeep",
   "license": "ISC",
