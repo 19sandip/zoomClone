@@ -1,6 +1,6 @@
 import  express from 'express';
 import {createServer} from "node:http";
-
+// this is nothing but reflect index.js file name Index.js to index.js
 import mongoose from 'mongoose';
 import { connectToSocket } from './src/controllers/SocketManager.js';
 import router from './src/routes/usersRoutes.js';
