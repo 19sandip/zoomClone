@@ -1,6 +1,5 @@
 import { Server } from "socket.io"
 
-
 const connections =  {};
 const messages =   {};
 const timeOnline =  {}
@@ -14,8 +13,12 @@ export const connectToSocket = (server) =>{
             credentials : true
         }
     });
-    io.on("connection", (socket)=>{
-  console.log("something is connected");
+
+    
+    io.on("connect", (socket)=>{
+
+  const userId = socket.handshake.auth.userId;
+ 
     socket.on("join-call", (path) =>{
 
         if(connections[path] === undefined){
@@ -26,14 +29,17 @@ export const connectToSocket = (server) =>{
         timeOnline[socket.id] = new Date();
 
         for(let i =0; i<connections[path].length; i++){
-            io.to(connections[path][i]).emit("user-joined", socket.id, connections[path]);
+         io.to(connections[path][i]).emit("user-joined", socket.id, connections[path]);
+
         }
 
         if(messages[path] != undefined){
             for(let i =0; i<messages[path].length; i++){
-                io.to(socket.id).emit("chat-messages", messages[path][i]['data'],messages[path][i]['sender'], messages[path][i]['socket-id-sender'])
+                io.to(socket.id).emit("chat-message", messages[path][i]['data'],messages[path][i]['sender'], messages[path][i]['socket-id-sender'])
             }
         }
+
+
 
         socket.on("signal", (toId, message) =>{
             io.to(toId).emit('signal', socket.id, message);
@@ -65,7 +71,7 @@ export const connectToSocket = (server) =>{
 
     socket.on("disconnect", ()=>{
         const timeDiff = Math.abs(timeOnline[socket.id] - new Date());
-        var key
+        var key;
 
         for(const [k, v] of JSON.parse(JSON.stringify(Object.entries(connections)))) {
             
@@ -74,6 +80,9 @@ export const connectToSocket = (server) =>{
                 key = k;
 
                 for(let a =0; a < connections[k].length; a++){
+
+                    // here you should check if you get any error in your c ode
+                    
                     io.to(connections[key][a]).emit('user-left', socket.id);
                 }
 

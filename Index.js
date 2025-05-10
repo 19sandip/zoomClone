@@ -21,8 +21,6 @@ const URL = process.env.MONGO_URL;
 const start = async () => {
   const connectionToDB = await mongoose.connect(`${URL}`);
 
-  
-    
         console.log("host of the DB : " + connectionToDB.connection.host);
         console.log("DB is connected successfully");
     

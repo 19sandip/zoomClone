@@ -1,17 +1,14 @@
-import {Schema} from "mongoose";
+import  {Schema,mongoose } from "mongoose";
 
 
 const meetingSchema = new Schema({
-    title : {
-        type : String,
-        requred : true
-    },
+  
     user_id : {
         type : String,
         required : true
     },
     meetingCode : {
-        type : Number,
+        type : String,
         required : true
     },
     date : {
